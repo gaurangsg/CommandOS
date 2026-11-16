@@ -1,0 +1,64 @@
+server:
+  port: ${SERVER_PORT:8080}
+
+spring:
+  application:
+    name: commandos-api
+  mail:
+    host: ${MAIL_HOST:}
+    port: ${MAIL_PORT:587}
+    username: ${MAIL_USERNAME:}
+    password: ${MAIL_PASSWORD:}
+    properties:
+      mail:
+        smtp:
+          auth: ${MAIL_SMTP_AUTH:true}
+          starttls:
+            enable: ${MAIL_SMTP_STARTTLS:true}
+        transport:
+          protocol: smtp
+  datasource:
+    url: ${DATABASE_URL:jdbc:mysql://localhost:3306/commandos?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC}
+    username: ${DATABASE_USERNAME:commandos}
+    password: ${DATABASE_PASSWORD:change-me-locally}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        jdbc:
+          time_zone: UTC
+        format_sql: false
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+
+commandos:
+  frontend-origin: ${FRONTEND_ORIGIN:http://localhost:5173}
+  mail:
+    host: ${MAIL_HOST:}
+    from: ${MAIL_FROM:}
+    frontend-base-url: ${FRONTEND_BASE_URL:http://localhost:5173}
+  security:
+    jwt:
+      secret: ${JWT_SECRET:}
+      issuer: commandos-api
+      access-token-seconds: ${JWT_ACCESS_TOKEN_SECONDS:900}
+      refresh-token-days: ${JWT_REFRESH_TOKEN_DAYS:30}
+    auth-cookie-secure: ${AUTH_COOKIE_SECURE:false}
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
